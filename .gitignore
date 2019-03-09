@@ -1,3 +1,5 @@
 config.js
 Pics
 node_modules
+.eslintrc.js
+package-lock.json
