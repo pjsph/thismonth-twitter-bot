@@ -23,7 +23,7 @@ init();
 setInterval(init, 1000);
 
 function tweetIt(txt) {
-  T.post({status: txt}, tweeted);
+  T.post("statuses/update", {status: txt}, tweeted);
 }
 
 function tweetImg(txt, path) {
