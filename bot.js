@@ -97,14 +97,15 @@ function checkDate(month, day, hour, minute, second) {
       monthstr = "December";
       break;
     default:
-      monthstr = "None";
+      monthstr = "Nøne";
       break;
   }
-  if(/*day == 1 &&*/ hour == 19-1 && minute == 10 && second <= 3) {
+  if(/*day == 1 && hour == 19-1 &&*/ minute == 32 && second <= 3) {
     if(!hasTweeted) {
       hasTweeted = true;
-      console.log("19h10m! /*day of the month! (" + monthstr + ")*/");
-      tweetIt("#ThisMonth Dev Test : it's 6:10pm!");
+      //console.log("1st day of the month! (" + monthstr + ")");
+      console.log("March test done.");
+      tweetIt("#ThisMonth Dev Test : it's March.\n„Remember the Pi Day the 9th!”\nThere are 5 Sundays this month. Enjoy!");
     }
   } else if(hasTweeted && second >= 4 && second <= 7) {
     hasTweeted = false;
