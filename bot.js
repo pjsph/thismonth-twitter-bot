@@ -100,11 +100,11 @@ function checkDate(month, day, hour, minute, second) {
       monthstr = "None";
       break;
   }
-  if(/*day == 1 &&*/ hour == 19-1 && minute == 0 && second <= 3) {
+  if(/*day == 1 &&*/ hour == 19-1 && minute == 10 && second <= 3) {
     if(!hasTweeted) {
       hasTweeted = true;
-      console.log("19h! /*day of the month! (" + monthstr + ")*/");
-      tweetIt("#ThisMonth Dev Test : it's 6pm!");
+      console.log("19h10m! /*day of the month! (" + monthstr + ")*/");
+      tweetIt("#ThisMonth Dev Test : it's 6:10pm!");
     }
   } else if(hasTweeted && second >= 4 && second <= 7) {
     hasTweeted = false;
