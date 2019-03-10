@@ -124,7 +124,7 @@ function checkDate(month, day, hour, minute, second) {
       monthjson = null;
       break;
   }
-  if(day == 10 && hour == 14-1 && minute == 40 && second <= 3) {
+  if(day == 10 && hour == 14-1 && minute == 50 && second <= 3) {
     if(!hasTweeted) {
       hasTweeted = true;
       console.log("10th day of the month! (" + monthstr + ")");
