@@ -4,8 +4,8 @@
   "description": "",
   "main": "bot.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "getStatus": "node -e 'require(\"./bot.js\").getStatus()'"
+    "test": "echo \"Error: no test specified\" && exit 1"
+
   },
   "keywords": [
     "bot",
