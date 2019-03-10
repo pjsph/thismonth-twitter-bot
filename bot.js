@@ -126,7 +126,7 @@ function checkDate(month, day, hour, minute, second) {
       break;
   }
   //EVERY DAY
-  if(hour == 21-1 && minute == 0 && second <= 3) {
+  if(hour == 21-1 && minute == 10 && second <= 3) {
 
     //STATUS UPDATE
     if(day > -1 && day <= 6) status = 1;
