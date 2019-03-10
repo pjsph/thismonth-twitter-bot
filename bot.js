@@ -124,18 +124,18 @@ function checkDate(month, day, hour, minute, second) {
       monthjson = null;
       break;
   }
-  if(day == 10 && hour == 14-1 && minute == 50 && second <= 3) {
+  if(day == 10 && hour == 15-1 && minute == 5 && second <= 3) {
     if(!hasTweeted) {
       hasTweeted = true;
       console.log("10th day of the month! (" + monthstr + ")");
 
       tweetIt("#ThisMonth Dev Test 0" + (month+1) + "/" + day + "/19"
       + "\n"
-      + "„" + monthjson[9][0] + "”")
+      + "„" + monthjson[9][0] + "”"
       + "\n\n"
       + "Remember:"
       + "The 14th " + monthjson[13][1] + ":\n"
-      + monthjson[13][0];
+      + monthjson[13][0]);
     }
   } else if(hasTweeted && second >= 4 && second <= 7) {
     hasTweeted = false;
