@@ -14,7 +14,8 @@ var T = new Twit({
 });
 
 var json;
-var hasTweeted = false;
+var status;
+var oldStatus;
 
 // T.post('statuses/update', { status: 'hello world!' }, function(err, data, response) {
 //   console.log(data)
@@ -50,6 +51,9 @@ function init(filename) {
   var fromJSON = fs.readFileSync(filename);
   json = JSON.parse(fromJSON);
 
+  status = json.status;
+  oldStatus = json.oldStatus;
+
   console.log("Initied!");
 }
 
@@ -60,9 +64,6 @@ function update() {
   var hour = date.getUTCHours();
   var minute = date.getUTCMinutes();
   var second = date.getUTCSeconds();
-
-  console.log(day + "d " + hour + "h " + minute + "m " + second + "s");
-  console.log(hasTweeted);
 
   checkDate(month, day, hour, minute, second);
 }
@@ -124,21 +125,59 @@ function checkDate(month, day, hour, minute, second) {
       monthjson = null;
       break;
   }
-  if(day == 10 && hour == 15-1 && minute == 5 && second <= 3) {
-    if(!hasTweeted) {
-      hasTweeted = true;
-      console.log("10th day of the month! (" + monthstr + ")");
+  //EVERY DAY
+  if(hour == 19-1 && minute == 10 && second <= 3) {
 
-      tweetIt("#ThisMonth Dev Test 0" + (month+1) + "/" + day + "/19"
-      + "\n"
-      + "„" + monthjson[9][0] + "”"
-      + "\n\n"
-      + "Remember:"
-      + "The 14th " + monthjson[13][1] + ":\n"
-      + monthjson[13][0]);
+    //STATUS UPDATE
+    if(day > -1 && day <= 6) status = 1;
+    else if(day > 6 && day <= 13) status = 2;
+    else if(day > 13 && day <= 20) status = 3;
+    else if(day > 20 && day <= 31) status = 4;
+
+    //TIME TO TWEET
+    if(status != oldStatus) {
+      oldStatus = status;
+
+      //SAVE DB
+      json.status = status;
+      json.oldStatus = oldStatus;
+      var newjson = JSON.stringify(json, null, 2);
+      fs.writeFile("database.json", newjson, function(err) {
+        console.log("Successfully saved database.");
+      });
+
+      var tweet =   "(" + status + "/4)";
+
+      //SAVE DESCRIPTION OF THE DAY
+      var datas = [];
+      var index = [];
+
+      //SET INDEX OF THE DAYS
+      if(status == 1) index = [-1, 6];
+      else if(status == 2) index = [6, 13];
+      else if(status == 3) index = [13, 20];
+      else if(status == 4) index = [20, 31];
+
+      //SAVE THE DATAS OF THE SPECIFIED INDEX
+      for(var i = (index[0]+1); i <= index[1]; i++) {
+        if(monthjson[i][0] != "") {
+          datas.push([i+1, monthjson[i][0]]);
+        }
+      }
+
+      //COMPOSE THE TWEET
+      for(var i = 0; i < datas.length; i++) {
+        var suffix;
+        if(endsWith(datas[i][0].toString(), "1")) suffix = "st";
+        else if(endsWith(datas[i][0].toString(), "2")) suffix = "nd";
+        else if(endsWith(datas[i][0].toString(), "3")) suffix = "rd";
+        else suffix = "th";
+
+        tweet += "\n\nThe " + datas[i][0] + suffix + ": „" + datas[i][1] + "”";
+      }
+
+      tweetIt("#ThisMonth " + tweet + "\n\nSee you the " + (index[1]+2) + (index[1]+2 == 22 ? "nd" : "th") + "!");
     }
-  } else if(hasTweeted && second >= 4 && second <= 7) {
-    hasTweeted = false;
   }
 }
 
@@ -148,4 +187,8 @@ function tweeted(err, data, response) {
   } else {
     console.log("Tweet sent!");
   }
+}
+
+function endsWith(str, suffix) {
+  return str.indexOf(suffix, str.length - suffix.length) !== -1;
 }

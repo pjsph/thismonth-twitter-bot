@@ -255,7 +255,7 @@
         "Saturday"
       ],
       [
-        "",
+        "3rd day of March!",
         "Sunday"
       ],
       [
@@ -271,11 +271,11 @@
         "Wednesday"
       ],
       [
-        "",
+        "7th day of March!",
         "Thursday"
       ],
       [
-        "",
+        "8th day of March!",
         "Friday"
       ],
       [
@@ -303,7 +303,7 @@
         "Thursday"
       ],
       [
-        "",
+        "15th day of March!",
         "Friday"
       ],
       [
@@ -1489,5 +1489,7 @@
         "Tuesday"
       ]
     ]
-  }
+  },
+  "status": 0,
+  "oldStatus": 0
 }
