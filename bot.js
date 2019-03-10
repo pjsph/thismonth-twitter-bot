@@ -13,14 +13,17 @@ var T = new Twit({
   strictSSL:            true,
 });
 
+var json;
 var hasTweeted = false;
 
 // T.post('statuses/update', { status: 'hello world!' }, function(err, data, response) {
 //   console.log(data)
 // })
 
-init();
-setInterval(init, 1000);
+init("database.json");
+
+update();
+setInterval(update, 1000);
 
 function tweetIt(txt) {
   T.post("statuses/update", {status: txt}, tweeted);
@@ -43,7 +46,14 @@ function tweetImg(txt, path) {
   }
 }
 
-function init() {
+function init(filename) {
+  var fromJSON = fs.readFileSync(filename);
+  json = JSON.parse(fromJSON);
+
+  console.log("Initied!");
+}
+
+function update() {
   var date = new Date();
   var month = date.getUTCMonth();
   var day = date.getUTCDate();
@@ -59,53 +69,73 @@ function init() {
 
 function checkDate(month, day, hour, minute, second) {
   var monthstr;
+  var monthjson;
   switch (month) {
     case 0:
       monthstr = "January";
+      monthjson = json.month.January;
       break;
     case 1:
       monthstr = "February";
+      monthjson = json.month.February;
       break;
     case 2:
       monthstr = "March";
+      monthjson = json.month.March;
       break;
     case 3:
       monthstr = "April";
+      monthjson = json.month.April;
       break;
     case 4:
       monthstr = "May";
+      monthjson = json.month.May;
       break;
     case 5:
       monthstr = "June";
+      monthjson = json.month.June;
       break;
     case 6:
       monthstr = "July";
+      monthjson = json.month.July;
       break;
     case 7:
       monthstr = "August";
+      monthjson = json.month.August;
       break;
     case 8:
       monthstr = "September";
+      monthjson = json.month.September;
       break;
     case 9:
       monthstr = "October";
+      monthjson = json.month.October;
       break;
     case 10:
       monthstr = "November";
+      monthjson = json.month.November;
       break;
     case 11:
       monthstr = "December";
+      monthjson = json.month.December;
       break;
     default:
       monthstr = "Nøne";
+      monthjson = null;
       break;
   }
-  if(/*day == 1 && hour == 19-1 &&*/ minute == 32 && second <= 3) {
+  if(day == 10 && hour == 14-1 && minute == 30 && second <= 3) {
     if(!hasTweeted) {
       hasTweeted = true;
-      //console.log("1st day of the month! (" + monthstr + ")");
-      console.log("March test done.");
-      tweetIt("#ThisMonth Dev Test : it's March.\n„Remember the Pi Day the 9th!”\nThere are 5 Sundays this month. Enjoy!");
+      console.log("10th day of the month! (" + monthstr + ")");
+      
+      tweetIt("#ThisMonth Dev Test 0" + (month+1) + "/" + day + "/19"
+      + "\n"
+      + "„" + monthjson[9][0] + "”")
+      + "\n\n"
+      + "Remember:"
+      + "The 14th " + monthjson[13][1] + ":\n"
+      + monthjson[13][0];
     }
   } else if(hasTweeted && second >= 4 && second <= 7) {
     hasTweeted = false;
