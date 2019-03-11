@@ -126,7 +126,7 @@ function checkDate(month, day, hour, minute, second) {
       break;
   }
   //EVERY DAY
-  if(hour == 0 && minute == 0 && second <= 3) {
+  if(/*hour == 0 &&*/ minute == 20 && second <= 3) {
 
     //STATUS UPDATE
     if(day > -1 && day <= 6) status = 1;
@@ -146,7 +146,7 @@ function checkDate(month, day, hour, minute, second) {
         console.log("Successfully saved database.");
       });
 
-      var tweet =   "(" + status + "/4)";
+      var tweet = monthstr + " (" + status + "/4)";
 
       //SAVE DESCRIPTION OF THE DAY
       var datas = [];
@@ -160,23 +160,32 @@ function checkDate(month, day, hour, minute, second) {
 
       //SAVE THE DATAS OF THE SPECIFIED INDEX
       for(var i = (index[0]+1); i <= index[1]; i++) {
-        if(monthjson[i][0] != "") {
-          datas.push([i+1, monthjson[i][0]]);
+        if(monthjson[i] != null) {
+          if(monthjson[i][0] != "") {
+            datas.push([i+1, monthjson[i][0], monthjson[i][1]]);
+          }
         }
       }
 
       //COMPOSE THE TWEET
-      for(var i = 0; i < datas.length; i++) {
-        var suffix;
-        if(endsWith(datas[i][0].toString(), "1")) suffix = "st";
-        else if(endsWith(datas[i][0].toString(), "2")) suffix = "nd";
-        else if(endsWith(datas[i][0].toString(), "3")) suffix = "rd";
-        else suffix = "th";
+      if(Array.isArray(datas) && datas.length !== 0) {
+        //DATAS ARE NOT EMPTY
+        for(var i = 0; i < datas.length; i++) {
+          var suffix;
+          if(!endsWith(datas[i][0].toString(), "11") && endsWith(datas[i][0].toString(), "1")) suffix = "st";
+          else if(!endsWith(datas[i][0].toString(), "12") && endsWith(datas[i][0].toString(), "2")) suffix = "nd";
+          else if(!endsWith(datas[i][0].toString(), "13") && endsWith(datas[i][0].toString(), "3")) suffix = "rd";
+          else suffix = "th";
 
-        tweet += "\n\nThe " + datas[i][0] + suffix + ": „" + datas[i][1] + "”";
+          tweet += "\n\nThe " + datas[i][0] + suffix + " (" + datas[i][2].substr(0, 3) + "): „" + datas[i][1] + "”";
+        }
+      } else {
+        //DATAS ARE NULL
+        tweet += "\n\nNothing to remember this period!";
       }
 
-      tweetIt("#ThisMonth " + tweet + "\n\nSee you the " + (index[1]+2) + (index[1]+2 == 22 ? "nd" : "th") + "!");
+      tweetIt("#ThisMonth " + tweet + "\n\nSee you the " + (status == 4 ? "1" : index[1]+2) + (status == 4 ? "st" : (index[1]+2 == 22 ? "nd" : "th")) + "!");
+      // console.log("#ThisMonth " + tweet + "\n\nSee you the " + (status == 4 ? "1" : index[1]+2) + (status == 4 ? "st" : (index[1]+2 == 22 ? "nd" : "th")) + "!");
     }
   }
 }
