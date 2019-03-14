@@ -128,7 +128,7 @@ function checkDate(month, day, hour, minute, second) {
       break;
   }
   //EVERY DAY
-  if(hour == 0 && minute == 0 && second <= 3) {
+  if(/*hour == 0 && minute == 0 &&*/ second <= 3) {
 
     //STATUS UPDATE
     if(day > -1 && day <= 6) status = 1;
@@ -186,8 +186,8 @@ function checkDate(month, day, hour, minute, second) {
         tweet += "\n\nNothing to remember this period!";
       }
 
-      tweetIt("#ThisMonth " + tweet + "\n\nSee you the " + (status == 4 ? "1" : index[1]+2) + (status == 4 ? "st" : (index[1]+2 == 22 ? "nd" : "th")) + "!");
-      // console.log("#ThisMonth " + tweet + "\n\nSee you the " + (status == 4 ? "1" : index[1]+2) + (status == 4 ? "st" : (index[1]+2 == 22 ? "nd" : "th")) + "!");
+      // tweetIt("#ThisMonth " + tweet + "\n\nSee you the " + (status == 4 ? "1" : index[1]+2) + (status == 4 ? "st" : (index[1]+2 == 22 ? "nd" : "th")) + "!");
+      console.log("#ThisMonth " + tweet + "\n\nSee you the " + (status == 4 ? "1" : index[1]+2) + (status == 4 ? "st" : (index[1]+2 == 22 ? "nd" : "th")) + "!");
     }
   }
 }
