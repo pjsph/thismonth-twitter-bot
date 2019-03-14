@@ -54,6 +54,8 @@ function init(filename) {
   status = json.status;
   oldStatus = json.oldStatus;
 
+  console.log(status + ";" + oldStatus);
+
   console.log("Initied!");
 }
 
