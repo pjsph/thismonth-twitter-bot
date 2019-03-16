@@ -3,6 +3,24 @@ const Twit = require('twit');
 //const config = require('./config');
 const fs = require('fs');
 const fse = require('fs-extra');
+const MySqlSync = require('sync-mysql');
+const mysql = require('mysql');
+
+// SYNC GET CONNECTION
+var connection = new MySqlSync({
+  host: process.env.DBHOST,
+  user: process.env.DBUSER,
+  password: process.env.DBPASS,
+  database: process.env.DBNAME
+});
+
+// ASYNC POST CONNECTION
+var connect2 = mysql.createConnection({
+  host: process.env.DBHOST,
+  user: process.env.DBUSER,
+  password: process.env.DBPASS,
+  database: process.env.DBNAME
+});
 
 var T = new Twit({
   consumer_key: process.env.CONSUMER_KEY,
@@ -21,7 +39,7 @@ var oldStatus;
 //   console.log(data)
 // })
 
-init("database.json");
+init();
 
 update();
 setInterval(update, 1000);
@@ -47,14 +65,17 @@ function tweetImg(txt, path) {
   }
 }
 
-function init(filename) {
-  var fromJSON = fs.readFileSync(filename);
-  json = JSON.parse(fromJSON);
+function init() {
+// JSON INITIALISATION
+  const res = connection.query("SELECT * FROM json WHERE id=1");
+
+  json = JSON.parse(res[0].json);
+  console.log('Successfully cached Json.');
 
   status = json.status;
   oldStatus = json.oldStatus;
 
-  console.log(status + ";" + oldStatus);
+  console.log("Status: " + status + ";" + oldStatus);
 
   console.log("Initied!");
 }
@@ -141,11 +162,19 @@ function checkDate(month, day, hour, minute, second) {
       oldStatus = status;
 
       //SAVE DB
+      connect2.connect();
       json.status = status;
       json.oldStatus = oldStatus;
-      var newjson = JSON.stringify(json, null, 2);
-      fs.writeFile("database.json", newjson, function(err) {
-        console.log("Successfully saved database.");
+      var newjson = JSON.stringify(json);
+
+      connect2.query('UPDATE json SET json = ? WHERE id = 1', [newjson], function(error, results, fields) {
+        if(error) console.log("Error while updating database.");
+        else console.log("Successfully saved database.");
+      });
+
+      connect2.end(function(error) {
+        if(error) console.log("Error while ending connection.");
+        else console.log("Async connection ended.");
       });
 
       var tweet = monthstr + " (" + status + "/4)";
