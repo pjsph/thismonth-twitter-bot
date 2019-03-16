@@ -1,11 +1,14 @@
 console.log('Bot starting...');
+/* ------------------------------------------------ */
 const Twit = require('twit');
 //const config = require('./config');
 const fs = require('fs');
 const fse = require('fs-extra');
 const MySqlSync = require('sync-mysql');
 const mysql = require('mysql');
+/* ------------------------------------------------ */
 
+/* ------------------------------------------------ */
 // SYNC GET CONNECTION
 var connection = new MySqlSync({
   host: process.env.DBHOST,
@@ -34,16 +37,20 @@ var T = new Twit({
 var json;
 var status;
 var oldStatus;
+/* ------------------------------------------------ */
 
 // T.post('statuses/update', { status: 'hello world!' }, function(err, data, response) {
 //   console.log(data)
 // })
 
+/* ------------------------------------------------ */
 init();
 
 update();
 setInterval(update, 1000);
+/* ------------------------------------------------ */
 
+/* ------------------------------------------------ */
 function tweetIt(txt) {
   T.post("statuses/update", {status: txt}, tweeted);
 }
@@ -64,7 +71,9 @@ function tweetImg(txt, path) {
     }
   }
 }
+/* ------------------------------------------------ */
 
+/* ------------------------------------------------ */
 function init() {
 // JSON INITIALISATION
   const res = connection.query("SELECT * FROM json WHERE id=1");
@@ -149,7 +158,7 @@ function checkDate(month, day, hour, minute, second) {
       break;
   }
   //EVERY DAY
-  if(/*hour == 0 && minute == 0 &&*/ second <= 3) {
+  if(hour == 0 && minute == 0 && second <= 3) {
 
     //STATUS UPDATE
     if(day > -1 && day <= 6) status = 1;
@@ -215,12 +224,14 @@ function checkDate(month, day, hour, minute, second) {
         tweet += "\n\nNothing to remember this period!";
       }
 
-      // tweetIt("#ThisMonth " + tweet + "\n\nSee you the " + (status == 4 ? "1" : index[1]+2) + (status == 4 ? "st" : (index[1]+2 == 22 ? "nd" : "th")) + "!");
-      console.log("#ThisMonth " + tweet + "\n\nSee you the " + (status == 4 ? "1" : index[1]+2) + (status == 4 ? "st" : (index[1]+2 == 22 ? "nd" : "th")) + "!");
+      tweetIt("#ThisMonth " + tweet + "\n\nSee you the " + (status == 4 ? "1" : index[1]+2) + (status == 4 ? "st" : (index[1]+2 == 22 ? "nd" : "th")) + "!");
+      // console.log("#ThisMonth " + tweet + "\n\nSee you the " + (status == 4 ? "1" : index[1]+2) + (status == 4 ? "st" : (index[1]+2 == 22 ? "nd" : "th")) + "!");
     }
   }
 }
+/* ------------------------------------------------ */
 
+/* ------------------------------------------------ */
 function tweeted(err, data, response) {
   if(err) {
     console.error("Tweet cannot be sent.");
@@ -232,3 +243,4 @@ function tweeted(err, data, response) {
 function endsWith(str, suffix) {
   return str.indexOf(suffix, str.length - suffix.length) !== -1;
 }
+/* ------------------------------------------------ */
