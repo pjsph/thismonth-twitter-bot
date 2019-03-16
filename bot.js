@@ -92,7 +92,7 @@ function init() {
 function update() {
   var date = new Date();
   var month = date.getUTCMonth();
-  var day = date.getUTCDate();
+  var day = date.getUTCDate(); // from 1 to 31
   var hour = date.getUTCHours();
   var minute = date.getUTCMinutes();
   var second = date.getUTCSeconds();
@@ -161,10 +161,10 @@ function checkDate(month, day, hour, minute, second) {
   if(hour == 0 && minute == 0 && second <= 3) {
 
     //STATUS UPDATE
-    if(day > -1 && day <= 6) status = 1;
-    else if(day > 6 && day <= 13) status = 2;
-    else if(day > 13 && day <= 20) status = 3;
-    else if(day > 20 && day <= 31) status = 4;
+    if(day > 0 && day <= 7) status = 1;
+    else if(day > 7 && day <= 14) status = 2;
+    else if(day > 14 && day <= 21) status = 3;
+    else if(day > 21 && day <= 31) status = 4;
 
     //TIME TO TWEET
     if(status != oldStatus) {
@@ -196,7 +196,7 @@ function checkDate(month, day, hour, minute, second) {
       if(status == 1) index = [-1, 6];
       else if(status == 2) index = [6, 13];
       else if(status == 3) index = [13, 20];
-      else if(status == 4) index = [20, 31];
+      else if(status == 4) index = [20, 30];
 
       //SAVE THE DATAS OF THE SPECIFIED INDEX
       for(var i = (index[0]+1); i <= index[1]; i++) {
