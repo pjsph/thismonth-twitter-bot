@@ -56,10 +56,15 @@ function tweetIt(txt) {
 }
 
 function tweetImg(txt, path) {
-  var params = {encoding: 'base64'};
-  var img = fs.readFileSync(path, params);
+  if(fs.existsSync(path)) {
 
-  T.post("media/upload", {media_data: img}, uploaded);
+    var params = {encoding: 'base64'};
+    var img = fs.readFileSync(path, params);
+    T.post("media/upload", {media_data: img}, uploaded);
+    
+  } else {
+    console.error("Path : " + path + " does not exist.");
+  }
 
   function uploaded(err, data, response) {
     if(err) {
