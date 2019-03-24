@@ -72,11 +72,7 @@ function tweetImg(txt, path) {
     } else {
       console.log("Pic uploaded.");
       var id = data.media_id_string;
-      T.post("statuses/update", {status: txt, media_ids: [id]}, tweeted); // ./Pics/April.jpg
-      fs.rename(path, "./Pics/used/" + path.substr(7, path.length - 7), function (error) {
-        if(error) console.error("Error while moving the image.");
-        else console.log("Successfully moved image.");
-      });
+      T.post("statuses/update", {status: txt, media_ids: [id]}, tweeted);
     }
   }
 }
@@ -100,7 +96,7 @@ function init() {
 
 function update() {
   var date = new Date();
-  var month = 3; //date.getUTCMonth();
+  var month = date.getUTCMonth();
   var day = date.getUTCDate(); // from 1 to 31
   var hour = date.getUTCHours();
   var minute = date.getUTCMinutes();
@@ -173,10 +169,7 @@ function checkDate(month, day, hour, minute, second) {
     if(day > 0 && day <= 7) status = 1;
     else if(day > 7 && day <= 14) status = 2;
     else if(day > 14 && day <= 21) status = 3;
-    /*else if(day > 21 && day <= 31) status = 4;*/
-
-    status = 1;
-    oldStatus = 4;
+    else if(day > 21 && day <= 31) status = 4;
 
     //TIME TO TWEET
     if(status != oldStatus) {
