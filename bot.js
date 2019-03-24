@@ -176,6 +176,7 @@ function checkDate(month, day, hour, minute, second) {
     /*else if(day > 21 && day <= 31) status = 4;*/
 
     status = 1;
+    oldStatus = 4;
 
     //TIME TO TWEET
     if(status != oldStatus) {
