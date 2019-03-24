@@ -61,7 +61,7 @@ function tweetImg(txt, path) {
     var params = {encoding: 'base64'};
     var img = fs.readFileSync(path, params);
     T.post("media/upload", {media_data: img}, uploaded);
-    
+
   } else {
     console.error("Path : " + path + " does not exist.");
   }
@@ -100,7 +100,7 @@ function init() {
 
 function update() {
   var date = new Date();
-  var month = date.getUTCMonth();
+  var month = 3; //date.getUTCMonth();
   var day = date.getUTCDate(); // from 1 to 31
   var hour = date.getUTCHours();
   var minute = date.getUTCMinutes();
