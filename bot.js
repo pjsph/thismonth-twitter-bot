@@ -163,7 +163,7 @@ function checkDate(month, day, hour, minute, second) {
       break;
   }
   //EVERY DAY
-  if(/*hour == 0 && minute == 0 &&*/ second <= 3) {
+  if(hour == 0 && minute == 0 && second <= 3) {
 
     //STATUS UPDATE
     if(day > 0 && day <= 7) status = 1;
