@@ -67,7 +67,11 @@ function tweetImg(txt, path) {
     } else {
       console.log("Pic uploaded.");
       var id = data.media_id_string;
-      T.post("statuses/update", {status: txt, media_ids: [id]}, tweeted);
+      T.post("statuses/update", {status: txt, media_ids: [id]}, tweeted); // ./Pics/April.jpg
+      fs.rename(path, "./Pics/used/" + path.substr(7, path.length - 7), function (error) {
+        if(error) console.error("Error while moving the image.");
+        else console.log("Successfully moved image.");
+      });
     }
   }
 }
@@ -158,13 +162,15 @@ function checkDate(month, day, hour, minute, second) {
       break;
   }
   //EVERY DAY
-  if(hour == 0 && minute == 0 && second <= 3) {
+  if(/*hour == 0 && minute == 0 &&*/ second <= 3) {
 
     //STATUS UPDATE
     if(day > 0 && day <= 7) status = 1;
     else if(day > 7 && day <= 14) status = 2;
     else if(day > 14 && day <= 21) status = 3;
-    else if(day > 21 && day <= 31) status = 4;
+    /*else if(day > 21 && day <= 31) status = 4;*/
+
+    status = 1;
 
     //TIME TO TWEET
     if(status != oldStatus) {
@@ -185,6 +191,11 @@ function checkDate(month, day, hour, minute, second) {
         if(error) console.log("Error while ending connection.");
         else console.log("Async connection ended.");
       });
+
+      // IT'S THE 1ST PERIOD (TWEET IMAGE)
+      if(status == 1) {
+        tweetImg("Have a nice month!", "./Pics/" + monthstr + ".jpg");
+      }
 
       var tweet = monthstr + " (" + status + "/4)";
 
